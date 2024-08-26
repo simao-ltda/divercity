@@ -223,6 +223,15 @@ public class Micropolis
 	int polluteRamp;
     int educationRamp;
 
+	// Para controle de exibição das mensagens
+	boolean schoolMilestoneAchieved = false;
+	boolean resZoneMilestoneAchieved = false;
+	boolean fundsMilestoneAchieved = false;
+	boolean pop10kMilestoneAchieved = false;
+	boolean pop50kMilestoneAchieved = false;
+	boolean pop100kMilestoneAchieved = false;
+	boolean policeMilestoneAchieved = false;
+	boolean stadiumMilestoneAchieved = false;
 
     // science/tech stuff
     ArrayList<BuildingTechnology> buildingTechs;
@@ -3042,16 +3051,6 @@ public class Micropolis
             lastCityPop = newPop + cheatedPopulation;
         }
 	}
-
-	// Para controle de exibição das mensagens
-	boolean schoolMilestoneAchieved = false;
-	boolean resZoneMilestoneAchieved = false;
-	boolean fundsMilestoneAchieved = false;
-	boolean pop10kMilestoneAchieved = false;
-	boolean pop50kMilestoneAchieved = false;
-	boolean pop100kMilestoneAchieved = false;
-	boolean policeMilestoneAchieved = false;
-	boolean stadiumMilestoneAchieved = false;
 
 	void doMessages() {
 
