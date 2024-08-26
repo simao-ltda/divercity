@@ -223,6 +223,15 @@ public class Micropolis
 	int polluteRamp;
     int educationRamp;
 
+	// Para controle de exibição das mensagens
+	boolean schoolMilestoneAchieved = false;
+	boolean resZoneMilestoneAchieved = false;
+	boolean fundsMilestoneAchieved = false;
+	boolean pop10kMilestoneAchieved = false;
+	boolean pop50kMilestoneAchieved = false;
+	boolean pop100kMilestoneAchieved = false;
+	boolean policeMilestoneAchieved = false;
+	boolean stadiumMilestoneAchieved = false;
 
     // science/tech stuff
     ArrayList<BuildingTechnology> buildingTechs;
@@ -3043,10 +3052,57 @@ public class Micropolis
         }
 	}
 
-	void doMessages()
-	{
-		//MORE (scenario stuff)
+	void doMessages() {
 
+		// Marco 5 escolas
+		if (!schoolMilestoneAchieved && schoolCount == 5) {
+			sendMessage(MicropolisMessage.SCHOOL_MILESTONE);
+			schoolMilestoneAchieved = true;
+		}
+
+		// Marco 100 áreas residenciais
+		if (!resZoneMilestoneAchieved && resZoneCount == 100) {
+			sendMessage(MicropolisMessage.RESIDENTIAL_MILESTONE);
+			resZoneMilestoneAchieved = true;
+		}
+
+		// Marco $100.000
+		if (!fundsMilestoneAchieved && budget.totalFunds >= 100000) {
+			sendMessage(MicropolisMessage.FUNDS_MILESTONE);
+			fundsMilestoneAchieved = true;
+		}
+
+		// Marco população 10.000
+		if (!pop10kMilestoneAchieved && lastCityPop >= 10000) {
+			sendMessage(MicropolisMessage.POP_10K_MILESTONE);
+			pop10kMilestoneAchieved = true;
+		}
+
+		// Marco população 50.000
+		if (!pop50kMilestoneAchieved && lastCityPop >= 50000) {
+			sendMessage(MicropolisMessage.POP_50K_MILESTONE);
+			pop50kMilestoneAchieved = true;
+		}
+
+		// Marco população 100.000
+		if (!pop100kMilestoneAchieved && lastCityPop >= 100000) {
+			sendMessage(MicropolisMessage.POP_100K_MILESTONE);
+			pop100kMilestoneAchieved = true;
+		}
+
+		// Marco 5 delegacias
+		if (!policeMilestoneAchieved && policeCount == 5) {
+			sendMessage(MicropolisMessage.POLICE_MILESTONE);
+			policeMilestoneAchieved = true;
+		}
+
+		// Marco de construção do estádio
+		if (!stadiumMilestoneAchieved && stadiumCount > 0) {
+			sendMessage(MicropolisMessage.STADIUM_MILESTONE);
+			stadiumMilestoneAchieved = true;
+		}
+
+		//MORE (scenario stuff)
 		checkGrowth();
 
 		int totalZoneCount = resZoneCount + comZoneCount + indZoneCount;
@@ -3169,6 +3225,7 @@ public class Micropolis
 				sendMessage(MicropolisMessage.CULTURE_NEED_FUNDING);
 			}
 			break;
+
 		default:
 			//nothing
 		}
