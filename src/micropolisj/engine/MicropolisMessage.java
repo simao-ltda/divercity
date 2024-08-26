@@ -81,7 +81,15 @@ public enum MicropolisMessage
     POLICE_UPGRADE,
     FIRE_UPGRADE,
     SOLARWIND_UPGRADE,
-    NUCLEAR_UPGRADE,;
+    NUCLEAR_UPGRADE,
+	SCHOOL_MILESTONE,
+	RESIDENTIAL_MILESTONE,
+	FUNDS_MILESTONE,
+	POP_10K_MILESTONE,
+	POP_50K_MILESTONE,
+	POP_100K_MILESTONE,
+	POLICE_MILESTONE,
+	STADIUM_MILESTONE;
 
 	/** Whether the message should be displayed in the notification pane. */
 	public boolean useNotificationPane = false;
