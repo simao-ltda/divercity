@@ -3055,13 +3055,13 @@ public class Micropolis
 	void doMessages() {
 
 		// Marco 5 escolas
-		if (!schoolMilestoneAchieved && schoolCount == 5) {
+		if (!schoolMilestoneAchieved && schoolCount >= 5) {
 			sendMessage(MicropolisMessage.SCHOOL_MILESTONE);
 			schoolMilestoneAchieved = true;
 		}
 
 		// Marco 100 áreas residenciais
-		if (!resZoneMilestoneAchieved && resZoneCount == 100) {
+		if (!resZoneMilestoneAchieved && resZoneCount >= 100) {
 			sendMessage(MicropolisMessage.RESIDENTIAL_MILESTONE);
 			resZoneMilestoneAchieved = true;
 		}
@@ -3091,7 +3091,7 @@ public class Micropolis
 		}
 
 		// Marco 5 delegacias
-		if (!policeMilestoneAchieved && policeCount == 5) {
+		if (!policeMilestoneAchieved && policeCount >= 5) {
 			sendMessage(MicropolisMessage.POLICE_MILESTONE);
 			policeMilestoneAchieved = true;
 		}
