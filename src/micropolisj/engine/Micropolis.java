@@ -133,8 +133,6 @@ public class Micropolis
     // census numbers, reset in phase 0 of each cycle, summed during map scan
 
 
-
-
 	int poweredZoneCount;
 	int unpoweredZoneCount;
 	int roadTotal;
