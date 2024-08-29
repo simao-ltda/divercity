@@ -140,12 +140,6 @@ public class NewCityDialog extends JDialog
             }
         });
 
-		btn = new JButton(strings.getString("welcome.creative"));
-		btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				onNextMapClicked();
-			}});
-		buttonPane.add(btn);
 	}
 
 	private void onPreviousMapClicked()

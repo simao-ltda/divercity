@@ -91,6 +91,7 @@ menu.difficulty = Difficulté
 menu.difficulty.0 = Facile
 menu.difficulty.1 = Moyenne
 menu.difficulty.2 = Difficile
+menu.difficulty.3 = Creatif
 
 menu.disasters = Désastres
 menu.disasters.MONSTER = Monstre
