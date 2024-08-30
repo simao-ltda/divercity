@@ -484,6 +484,13 @@ public class Micropolis
 		}
 	}
 
+	void fireDisasterStarted()
+	{
+		for (DisasterListener l : disasterListeners) {
+			l.disasterStarted();
+		}
+	}
+
 	void fireEvaluationChanged()
 	{
 		for (Listener l : listeners) {
@@ -540,6 +547,7 @@ public class Micropolis
 	ArrayList<Listener> listeners = new ArrayList<Listener>();
 	ArrayList<MapListener> mapListeners = new ArrayList<MapListener>();
 	ArrayList<EarthquakeListener> earthquakeListeners = new ArrayList<EarthquakeListener>();
+	ArrayList<DisasterListener> disasterListeners = new ArrayList<DisasterListener>();
 
 	public void addListener(Listener l)
 	{
@@ -549,6 +557,16 @@ public class Micropolis
 	public void removeListener(Listener l)
 	{
 		this.listeners.remove(l);
+	}
+
+	public void addDisasterListener(DisasterListener l)
+	{
+		this.disasterListeners.add(l);
+	}
+
+	public void removeDisasterListener(DisasterListener l)
+	{
+		this.disasterListeners.remove(l);
 	}
 
 	public void addEarthquakeListener(EarthquakeListener l)
@@ -2776,6 +2794,7 @@ public class Micropolis
 		fireEarthquakeStarted();
 
 		sendMessageAt(MicropolisMessage.EARTHQUAKE_REPORT, centerMassX, centerMassY);
+		fireDisasterStarted();
 		int time = PRNG.nextInt(701) + 300;
 		for (int z = 0; z < time; z++) {
 			int x = PRNG.nextInt(getWidth());
@@ -2847,6 +2866,7 @@ public class Micropolis
 		int i = PRNG.nextInt(candidates.size());
 		CityLocation p = candidates.get(i);
 		doMeltdown(p.x, p.y);
+		fireDisasterStarted();
 		return true;
 	}
 
@@ -2877,6 +2897,7 @@ public class Micropolis
 
 		// no "nice" location found, just start in center of map then
 		makeMonsterAt(getWidth(), getHeight());
+		fireDisasterStarted();
 	}
 
 	void makeMonsterAt(int xpos, int ypos)
@@ -2900,6 +2921,7 @@ public class Micropolis
 		int ypos = PRNG.nextInt(getHeight() - 19) + 10;
 		sprites.add(new TornadoSprite(this, xpos, ypos));
 		sendMessageAt(MicropolisMessage.TORNADO_REPORT, xpos, ypos);
+		fireDisasterStarted();
 	}
 
 	public void makeFlood()
@@ -2924,6 +2946,7 @@ public class Micropolis
 							sendMessageAt(MicropolisMessage.FLOOD_REPORT, xx, yy);
 							floodX = xx;
 							floodY = yy;
+							fireDisasterStarted();
 							return;
 						}
 					}

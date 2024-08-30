@@ -31,7 +31,7 @@ import micropolisj.engine.techno.GeneralTechnology;
 import micropolisj.util.TranslationTool;
 
 public class MainWindow extends JFrame
-        implements Micropolis.Listener, EarthquakeListener {
+        implements Micropolis.Listener, EarthquakeListener, DisasterListener {
     Micropolis engine;
     MicropolisDrawingArea drawingArea;
     JScrollPane drawingAreaScroll;
@@ -344,6 +344,7 @@ public class MainWindow extends JFrame
         mapView.setEngine(engine);
         engine.addListener(this);
         engine.addEarthquakeListener(this);
+        engine.addDisasterListener(this);
         reloadFunds();
         reloadOptions();
         startTimer();
@@ -354,6 +355,7 @@ public class MainWindow extends JFrame
         if (engine != null) { // old engine
             engine.removeListener(this);
             engine.removeEarthquakeListener(this);
+            engine.removeDisasterListener(this);
         }
 
         engine = newEngine;
@@ -361,6 +363,7 @@ public class MainWindow extends JFrame
         if (engine != null) { // new engine
             engine.addListener(this);
             engine.addEarthquakeListener(this);
+            engine.addDisasterListener(this);
         }
 
         boolean timerEnabled = isTimerActive();
@@ -1581,6 +1584,14 @@ public class MainWindow extends JFrame
     void stopEarthquake() {
         drawingArea.shake(0);
         currentEarthquake = null;
+    }
+
+    //implements DisasterListener
+    public void disasterStarted() {
+        if (isTimerActive()) {
+            stopTimer();
+            getEngine().pauseUnpause();
+        }
     }
 
     private void stopTimer() {
