@@ -125,5 +125,10 @@ public enum MicropolisMessage
 	SHIPWRECK_REPORT.useNotificationPane = true;
 	COPTER_CRASH_REPORT.useNotificationPane = true;
 	PLANECRASH_REPORT.useNotificationPane = true;
+	SCHOOL_MILESTONE.useNotificationPane = true;
+	RESIDENTIAL_MILESTONE.useNotificationPane = true;
+	FUNDS_MILESTONE.useNotificationPane = true;
+	POLICE_MILESTONE.useNotificationPane = true;
+	STADIUM_MILESTONE.useNotificationPane = true;
 	}
 }
