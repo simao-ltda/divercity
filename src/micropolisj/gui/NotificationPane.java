@@ -24,6 +24,7 @@ public class NotificationPane extends JPanel
 	MicropolisDrawingArea mapView;
 	JPanel mainPane;
 	JComponent infoPane;
+	private Micropolis engine;
 
 	static final Dimension VIEWPORT_SIZE = new Dimension(160,160);
 	static final Color QUERY_COLOR = new Color(255,165,0);
@@ -34,6 +35,10 @@ public class NotificationPane extends JPanel
 	public NotificationPane(Micropolis engine)
 	{
 		super(new BorderLayout());
+
+		this.engine = engine;
+		engine.setNotificationPane(this);
+
 		setVisible(false);
 
 		headerLbl = new JLabel();
@@ -73,6 +78,7 @@ public class NotificationPane extends JPanel
 	private void onDismissClicked()
 	{
 		setVisible(false);
+		engine.resumeFromMessage();
 	}
 
 	void setPicture(Micropolis engine, int xpos, int ypos)
