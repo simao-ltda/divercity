@@ -2794,7 +2794,6 @@ public class Micropolis
 		fireEarthquakeStarted();
 
 		sendMessageAt(MicropolisMessage.EARTHQUAKE_REPORT, centerMassX, centerMassY);
-		fireDisasterStarted();
 		int time = PRNG.nextInt(701) + 300;
 		for (int z = 0; z < time; z++) {
 			int x = PRNG.nextInt(getWidth());
@@ -2809,6 +2808,8 @@ public class Micropolis
 				}
 			}
 		}
+		
+		fireDisasterStarted();
 	}
 
 	void setFire()
