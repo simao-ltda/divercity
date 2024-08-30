@@ -140,7 +140,6 @@ public class NewCityDialog extends JDialog
             }
         });
 
-
 	}
 
 	private void onPreviousMapClicked()
