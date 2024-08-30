@@ -10,7 +10,7 @@
 -->
 <project name="micropolisj" default="all">
 
-<property name="package-version" value="1.7" />
+<property name="package-version" value="1.8" />
 
 <property name="srcdir" location="src" />
 <property name="builddir" location="build" />
@@ -78,7 +78,7 @@
        classpathref="build-classpath"
 	includeantruntime="false"
 	debug="true" debuglevel="lines,vars,source"
-	source="1.6" target="1.6"
+	source="1.8" target="1.8"
        >
 	<compilerarg value="-Xlint:unchecked" />
 	<compilerarg value="-Xlint:deprecation" />
