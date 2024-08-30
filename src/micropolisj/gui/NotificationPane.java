@@ -78,7 +78,9 @@ public class NotificationPane extends JPanel
 	private void onDismissClicked()
 	{
 		setVisible(false);
-		engine.resumeFromMessage();
+		if (engine.isPaused) {
+			engine.pauseUnpause();
+		}
 	}
 
 	void setPicture(Micropolis engine, int xpos, int ypos)
