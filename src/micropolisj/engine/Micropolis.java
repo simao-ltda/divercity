@@ -2707,14 +2707,16 @@ public class Micropolis
 		fireOptionsChanged();
 	}
 
-    public boolean isPaused() {
+    	public boolean isPaused() {
         return isPaused;
     }
 
 	public void setSpeed(Speed newSpeed)
 	{
-        if (!isPaused)
-            simSpeed = newSpeed;
+        if (isPaused) {
+        	pauseUnpause();
+	  }
+        simSpeed = newSpeed;
         oldSpeed = newSpeed;
         fireOptionsChanged();
 	}
@@ -2723,11 +2725,9 @@ public class Micropolis
         if (!isPaused) {
             simSpeed = Speed.PAUSED;
             isPaused = true;
-
         } else {
             simSpeed = oldSpeed;
             isPaused = false;
-
         }
     }
 
