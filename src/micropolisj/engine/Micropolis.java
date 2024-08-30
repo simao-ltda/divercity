@@ -133,8 +133,6 @@ public class Micropolis
     // census numbers, reset in phase 0 of each cycle, summed during map scan
 
 
-
-
 	int poweredZoneCount;
 	int unpoweredZoneCount;
 	int roadTotal;
@@ -1216,7 +1214,7 @@ public class Micropolis
             floodCnt--;
 		}
 
-		final int [] DisChance = { 480, 240, 60 };
+		final int [] DisChance = { 480, 240, 60, 50 };
 
 
         if (noDisasters)
@@ -2164,12 +2162,12 @@ public class Micropolis
 
 	/** Road/rail maintenance cost multiplier, for various difficulty settings.
 	 */
-	static final double [] RLevels = { 0.7, 0.9, 1.2 };
+	static final double [] RLevels = { 0.7, 0.9, 1.2, 1.2 };
 
 	//tax income
 	/** Tax income multiplier, for various difficulty settings.
 	 */
-	static final double [] FLevels = { 2.2, 1.9, 1.5 };
+	static final double [] FLevels = { 2.2, 1.9, 1.5, 1.5 };
 
 	void collectTaxPartial()
 	{
@@ -3079,50 +3077,32 @@ public class Micropolis
 	void doMessages() {
 
 		// Marco 5 escolas
-		if (!schoolMilestoneAchieved && schoolCount == 5) {
-			sendMessage(MicropolisMessage.SCHOOL_MILESTONE);
+		if (!schoolMilestoneAchieved && schoolCount >= 5) {
+			sendMessageAt(MicropolisMessage.SCHOOL_MILESTONE, centerMassX, centerMassY);
 			schoolMilestoneAchieved = true;
 		}
 
 		// Marco 100 áreas residenciais
-		if (!resZoneMilestoneAchieved && resZoneCount == 100) {
-			sendMessage(MicropolisMessage.RESIDENTIAL_MILESTONE);
+		if (!resZoneMilestoneAchieved && resZoneCount >= 100) {
+			sendMessageAt(MicropolisMessage.RESIDENTIAL_MILESTONE, centerMassX, centerMassY);
 			resZoneMilestoneAchieved = true;
 		}
 
 		// Marco $100.000
 		if (!fundsMilestoneAchieved && budget.totalFunds >= 100000) {
-			sendMessage(MicropolisMessage.FUNDS_MILESTONE);
+			sendMessageAt(MicropolisMessage.FUNDS_MILESTONE, centerMassX, centerMassY);
 			fundsMilestoneAchieved = true;
 		}
 
-		// Marco população 10.000
-		if (!pop10kMilestoneAchieved && lastCityPop >= 10000) {
-			sendMessage(MicropolisMessage.POP_10K_MILESTONE);
-			pop10kMilestoneAchieved = true;
-		}
-
-		// Marco população 50.000
-		if (!pop50kMilestoneAchieved && lastCityPop >= 50000) {
-			sendMessage(MicropolisMessage.POP_50K_MILESTONE);
-			pop50kMilestoneAchieved = true;
-		}
-
-		// Marco população 100.000
-		if (!pop100kMilestoneAchieved && lastCityPop >= 100000) {
-			sendMessage(MicropolisMessage.POP_100K_MILESTONE);
-			pop100kMilestoneAchieved = true;
-		}
-
 		// Marco 5 delegacias
-		if (!policeMilestoneAchieved && policeCount == 5) {
-			sendMessage(MicropolisMessage.POLICE_MILESTONE);
+		if (!policeMilestoneAchieved && policeCount >= 5) {
+			sendMessageAt(MicropolisMessage.POLICE_MILESTONE, centerMassX, centerMassY);
 			policeMilestoneAchieved = true;
 		}
 
 		// Marco de construção do estádio
 		if (!stadiumMilestoneAchieved && stadiumCount > 0) {
-			sendMessage(MicropolisMessage.STADIUM_MILESTONE);
+			sendMessageAt(MicropolisMessage.STADIUM_MILESTONE, centerMassX, centerMassY);
 			stadiumMilestoneAchieved = true;
 		}
 
