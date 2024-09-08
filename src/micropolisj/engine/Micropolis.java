@@ -12,6 +12,8 @@ package micropolisj.engine;
 
 import micropolisj.engine.techno.*;
 
+import micropolisj.gui.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -35,6 +37,8 @@ public class Micropolis
 	static final Random DEFAULT_PRNG = new Random();
 
 	Random PRNG;
+
+	private NotificationPane notificationPane;
 
 	// full size arrays
 	char [][] map;
@@ -2707,14 +2711,20 @@ public class Micropolis
 		fireOptionsChanged();
 	}
 
-    public boolean isPaused() {
+    	public boolean isPaused() {
         return isPaused;
     }
 
+	public void setNotificationPane(NotificationPane pane) {
+		this.notificationPane = pane;
+	}
+
 	public void setSpeed(Speed newSpeed)
 	{
-        if (!isPaused)
-            simSpeed = newSpeed;
+        if (isPaused) {
+        	pauseUnpause();
+	  }
+        simSpeed = newSpeed;
         oldSpeed = newSpeed;
         fireOptionsChanged();
 	}
@@ -2723,22 +2733,21 @@ public class Micropolis
         if (!isPaused) {
             simSpeed = Speed.PAUSED;
             isPaused = true;
-
         } else {
             simSpeed = oldSpeed;
             isPaused = false;
-
         }
     }
 
-	public void animate()
-	{
-		this.acycle = (this.acycle+1) % 960;
-		if (this.acycle % 2 == 0) {
-			step();
+	public void animate() {
+		if (!isPaused) {
+			this.acycle = (this.acycle + 1) % 960;
+			if (this.acycle % 2 == 0) {
+				step();
+			}
+			moveObjects();
+			animateTiles();
 		}
-		moveObjects();
-		animateTiles();
 	}
 
 	public Sprite [] allSprites()
@@ -3068,6 +3077,7 @@ public class Micropolis
 				}
 				if (z != null) {
 					sendMessage(z);
+					sendMessageAt(z, centerMassX, centerMassY);
 				}
 			}
             lastCityPop = newPop + cheatedPopulation;
@@ -3250,6 +3260,9 @@ public class Micropolis
 
 	public void sendMessageAt(MicropolisMessage message, int x, int y)
 	{
+		if (!isPaused) {
+        		pauseUnpause();
+	  	}
 		fireCityMessage(message, new CityLocation(x,y));
 	}
 	/*
