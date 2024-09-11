@@ -29,6 +29,7 @@ import javax.swing.plaf.metal.MetalIconFactory;
 import micropolisj.engine.*;
 import micropolisj.engine.techno.GeneralTechnology;
 import micropolisj.util.TranslationTool;
+import micropolisj.util.Mechanics;
 
 public class MainWindow extends JFrame
         implements Micropolis.Listener, EarthquakeListener, DisasterListener {
@@ -804,6 +805,15 @@ public class MainWindow extends JFrame
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 onLaunchTranslationToolClicked();
+            }
+        });
+        helpMenu.add(menuItem);
+
+        menuItem = new JMenuItem(strings.getString("menu.help.mechanics"));
+        setupKeys(menuItem, "menu.help.mechanics");
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                onLauchMechanics();
             }
         });
         helpMenu.add(menuItem);
@@ -1811,13 +1821,19 @@ public class MainWindow extends JFrame
             mapLegendLbl.setIcon(null);
         }
     }
-
+//aqui
     private void onLaunchTranslationToolClicked() {
         if (maybeSaveCity()) {
             dispose();
             TranslationTool tt = new TranslationTool();
             tt.setVisible(true);
         }
+    }
+
+    private void onLauchMechanics() {
+        Mechanics mc = new Mechanics();
+        mc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha apenas a janela Mechanics ao clicar no X
+        mc.setVisible(true);
     }
 
     private void onAboutClicked() {
