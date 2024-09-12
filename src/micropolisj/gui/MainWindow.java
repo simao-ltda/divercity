@@ -1821,7 +1821,7 @@ public class MainWindow extends JFrame
             mapLegendLbl.setIcon(null);
         }
     }
-//aqui
+
     private void onLaunchTranslationToolClicked() {
         if (maybeSaveCity()) {
             dispose();
