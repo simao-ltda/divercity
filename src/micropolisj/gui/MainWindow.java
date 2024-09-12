@@ -1158,7 +1158,7 @@ public class MainWindow extends JFrame
             stopTimer();
         }
 
-        new NewCityDialog(this, !firstTime).setVisible(true);
+        new NewCityDialog(this, !firstTime, messagesPane).setVisible(true);
 
         if (timerEnabled) {
             startTimer();
