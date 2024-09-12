@@ -17,6 +17,14 @@ import micropolisj.gui.*;
 import java.io.*;
 import java.util.*;
 
+import micropolisj.engine.techno.BuildingTechnology;
+
+import micropolisj.engine.techno.GeneralTechnology;
+
+import micropolisj.engine.techno.StreetUpgradeTech;
+
+import micropolisj.engine.techno.Technology;
+
 import static micropolisj.engine.TileConstants.*;
 
 /**
