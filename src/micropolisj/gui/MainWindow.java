@@ -30,6 +30,7 @@ import micropolisj.Main;
 import micropolisj.engine.*;
 import micropolisj.engine.techno.GeneralTechnology;
 import micropolisj.util.TranslationTool;
+import micropolisj.util.Mechanics;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -38,7 +39,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class MainWindow extends JFrame
-        implements Micropolis.Listener, EarthquakeListener {
+        implements Micropolis.Listener, EarthquakeListener, DisasterListener {
     Micropolis engine;
     MicropolisDrawingArea drawingArea;
     JScrollPane drawingAreaScroll;
@@ -351,6 +352,7 @@ public class MainWindow extends JFrame
         mapView.setEngine(engine);
         engine.addListener(this);
         engine.addEarthquakeListener(this);
+        engine.addDisasterListener(this);
         reloadFunds();
         reloadOptions();
         startTimer();
@@ -361,6 +363,7 @@ public class MainWindow extends JFrame
         if (engine != null) { // old engine
             engine.removeListener(this);
             engine.removeEarthquakeListener(this);
+            engine.removeDisasterListener(this);
         }
 
         engine = newEngine;
@@ -368,6 +371,7 @@ public class MainWindow extends JFrame
         if (engine != null) { // new engine
             engine.addListener(this);
             engine.addEarthquakeListener(this);
+            engine.addDisasterListener(this);
         }
 
         boolean timerEnabled = isTimerActive();
@@ -741,6 +745,16 @@ public class MainWindow extends JFrame
                 }));
         disastersMenu.add(menuItem);
 
+        menuItem = new JMenuItem(strings.getString("menu.disasters.LIGHTNING"));
+        setupKeys(menuItem, "menu.disasters.LIGHTNING");
+        menuItem.addActionListener(wrapActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent ev) {
+                        onInvokeDisasterClicked(Disaster.LIGHTNING);
+                    }
+                }));
+        disastersMenu.add(menuItem);
+
         JMenu priorityMenu = new JMenu(strings.getString("menu.speed"));
         setupKeys(priorityMenu, "menu.speed");
         menuBar.add(priorityMenu);
@@ -844,6 +858,15 @@ public class MainWindow extends JFrame
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 onLaunchTranslationToolClicked();
+            }
+        });
+        helpMenu.add(menuItem);
+
+        menuItem = new JMenuItem(strings.getString("menu.help.mechanics"));
+        setupKeys(menuItem, "menu.help.mechanics");
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                onLauchMechanics();
             }
         });
         helpMenu.add(menuItem);
@@ -1179,7 +1202,7 @@ public class MainWindow extends JFrame
             stopTimer();
         }
 
-        new NewCityDialog(this, !firstTime).setVisible(true);
+        new NewCityDialog(this, !firstTime, messagesPane).setVisible(true);
 
         if (timerEnabled) {
             startTimer();
@@ -1627,6 +1650,14 @@ public class MainWindow extends JFrame
         currentEarthquake = null;
     }
 
+    //implements DisasterListener
+    public void disasterStarted() {
+        if (isTimerActive()) {
+            stopTimer();
+            getEngine().pauseUnpause();
+        }
+    }
+
     private void stopTimer() {
         assert isTimerActive();
 
@@ -1695,6 +1726,9 @@ public class MainWindow extends JFrame
                 break;
             case EARTHQUAKE:
                 getEngine().makeEarthquake();
+                break;
+            case LIGHTNING:
+                getEngine().makeLightning();
                 break;
             default:
                 assert false; //unknown disaster
@@ -1858,6 +1892,12 @@ public class MainWindow extends JFrame
             TranslationTool tt = new TranslationTool();
             tt.setVisible(true);
         }
+    }
+
+    private void onLauchMechanics() {
+        Mechanics mc = new Mechanics();
+        mc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha apenas a janela Mechanics ao clicar no X
+        mc.setVisible(true);
     }
 
     private void onAboutClicked() {

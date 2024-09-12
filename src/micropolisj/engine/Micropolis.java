@@ -12,6 +12,8 @@ package micropolisj.engine;
 
 import micropolisj.engine.techno.*;
 
+import micropolisj.gui.*;
+
 import java.io.*;
 import java.util.*;
 
@@ -35,6 +37,8 @@ public class Micropolis
 	static final Random DEFAULT_PRNG = new Random();
 
 	Random PRNG;
+
+	private NotificationPane notificationPane;
 
 	// full size arrays
 	char [][] map;
@@ -131,8 +135,6 @@ public class Micropolis
 
 
     // census numbers, reset in phase 0 of each cycle, summed during map scan
-
-
 
 
 	int poweredZoneCount;
@@ -484,6 +486,13 @@ public class Micropolis
 		}
 	}
 
+	void fireDisasterStarted()
+	{
+		for (DisasterListener l : disasterListeners) {
+			l.disasterStarted();
+		}
+	}
+
 	void fireEvaluationChanged()
 	{
 		for (Listener l : listeners) {
@@ -540,6 +549,7 @@ public class Micropolis
 	ArrayList<Listener> listeners = new ArrayList<Listener>();
 	ArrayList<MapListener> mapListeners = new ArrayList<MapListener>();
 	ArrayList<EarthquakeListener> earthquakeListeners = new ArrayList<EarthquakeListener>();
+	ArrayList<DisasterListener> disasterListeners = new ArrayList<DisasterListener>();
 
 	public void addListener(Listener l)
 	{
@@ -549,6 +559,16 @@ public class Micropolis
 	public void removeListener(Listener l)
 	{
 		this.listeners.remove(l);
+	}
+
+	public void addDisasterListener(DisasterListener l)
+	{
+		this.disasterListeners.add(l);
+	}
+
+	public void removeDisasterListener(DisasterListener l)
+	{
+		this.disasterListeners.remove(l);
 	}
 
 	public void addEarthquakeListener(EarthquakeListener l)
@@ -879,6 +899,7 @@ public class Micropolis
         case 15:
             fireAnalysis();
             doDisasters();
+			gerarEventoAleatorio();
 			break;
 
 		default:
@@ -1198,7 +1219,7 @@ public class Micropolis
             floodCnt--;
 		}
 
-		final int [] DisChance = { 480, 240, 60 };
+		final int [] DisChance = { 480, 240, 60, 50 };
 
 
         if (noDisasters)
@@ -1237,7 +1258,21 @@ public class Micropolis
 				makeMonster();
 			}
 			break;
+		case 9:
+			makeLightning();
+			break;
 		}
+	}
+
+	void gerarEventoAleatorio() {
+
+		if (PRNG.nextInt(100) < 2) {
+
+			setFunds(budget.totalFunds + 10000);
+			sendMessage(MicropolisMessage.ECONOMIC_BOOM);
+			fireFundsChanged();
+		}
+		return;
 	}
 
 	private int[][] smoothFirePoliceMap(int[][] omap)
@@ -2146,12 +2181,12 @@ public class Micropolis
 
 	/** Road/rail maintenance cost multiplier, for various difficulty settings.
 	 */
-	static final double [] RLevels = { 0.7, 0.9, 1.2 };
+	static final double [] RLevels = { 0.7, 0.9, 1.2, 1.2 };
 
 	//tax income
 	/** Tax income multiplier, for various difficulty settings.
 	 */
-	static final double [] FLevels = { 2.2, 1.9, 1.5 };
+	static final double [] FLevels = { 2.2, 1.9, 1.5, 1.5 };
 
 	void collectTaxPartial()
 	{
@@ -2691,14 +2726,20 @@ public class Micropolis
 		fireOptionsChanged();
 	}
 
-    public boolean isPaused() {
+    	public boolean isPaused() {
         return isPaused;
     }
 
+	public void setNotificationPane(NotificationPane pane) {
+		this.notificationPane = pane;
+	}
+
 	public void setSpeed(Speed newSpeed)
 	{
-        if (!isPaused)
-            simSpeed = newSpeed;
+        if (isPaused) {
+        	pauseUnpause();
+	  }
+        simSpeed = newSpeed;
         oldSpeed = newSpeed;
         fireOptionsChanged();
 	}
@@ -2707,22 +2748,21 @@ public class Micropolis
         if (!isPaused) {
             simSpeed = Speed.PAUSED;
             isPaused = true;
-
         } else {
             simSpeed = oldSpeed;
             isPaused = false;
-
         }
     }
 
-	public void animate()
-	{
-		this.acycle = (this.acycle+1) % 960;
-		if (this.acycle % 2 == 0) {
-			step();
+	public void animate() {
+		if (!isPaused) {
+			this.acycle = (this.acycle + 1) % 960;
+			if (this.acycle % 2 == 0) {
+				step();
+			}
+			moveObjects();
+			animateTiles();
 		}
-		moveObjects();
-		animateTiles();
 	}
 
 	public Sprite [] allSprites()
@@ -2790,6 +2830,8 @@ public class Micropolis
 				}
 			}
 		}
+		
+		fireDisasterStarted();
 	}
 
 	void setFire()
@@ -2847,6 +2889,7 @@ public class Micropolis
 		int i = PRNG.nextInt(candidates.size());
 		CityLocation p = candidates.get(i);
 		doMeltdown(p.x, p.y);
+		fireDisasterStarted();
 		return true;
 	}
 
@@ -2877,6 +2920,7 @@ public class Micropolis
 
 		// no "nice" location found, just start in center of map then
 		makeMonsterAt(getWidth(), getHeight());
+		fireDisasterStarted();
 	}
 
 	void makeMonsterAt(int xpos, int ypos)
@@ -2900,6 +2944,7 @@ public class Micropolis
 		int ypos = PRNG.nextInt(getHeight() - 19) + 10;
 		sprites.add(new TornadoSprite(this, xpos, ypos));
 		sendMessageAt(MicropolisMessage.TORNADO_REPORT, xpos, ypos);
+		fireDisasterStarted();
 	}
 
 	public void makeFlood()
@@ -2924,12 +2969,34 @@ public class Micropolis
 							sendMessageAt(MicropolisMessage.FLOOD_REPORT, xx, yy);
 							floodX = xx;
 							floodY = yy;
+							fireDisasterStarted();
 							return;
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	public void makeLightning() 
+	{
+		// forty attempts at finding place to start fire
+		for (int t = 0; t < 40; t++)
+		{
+			int x = PRNG.nextInt(getWidth());
+			int y = PRNG.nextInt(getHeight());
+			int tile = getTile(x, y);
+			if (!isZoneCenter(tile) && isCombustible(tile))
+			{
+				if (tile > 21 && (tile <= LASTZONE || (tile > NEWZONE && tile <= NEWLASTZONE))) {
+					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+					sendMessageAt(MicropolisMessage.LIGHTNING_REPORT, x, y);
+					pauseUnpause();
+					return;
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -3046,6 +3113,7 @@ public class Micropolis
 				}
 				if (z != null) {
 					sendMessage(z);
+					sendMessageAt(z, centerMassX, centerMassY);
 				}
 			}
             lastCityPop = newPop + cheatedPopulation;
@@ -3221,6 +3289,9 @@ public class Micropolis
 
 	public void sendMessageAt(MicropolisMessage message, int x, int y)
 	{
+		if (!isPaused) {
+        		pauseUnpause();
+	  	}
 		fireCityMessage(message, new CityLocation(x,y));
 	}
 	/*

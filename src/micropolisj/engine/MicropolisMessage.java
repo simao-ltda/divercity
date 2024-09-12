@@ -39,6 +39,7 @@ public enum MicropolisMessage
 	MONSTER_REPORT,
 	TORNADO_REPORT,
 	EARTHQUAKE_REPORT,     //  23            makeEarthquake
+	LIGHTNING_REPORT,
 	PLANECRASH_REPORT,
 	SHIPWRECK_REPORT,
 	TRAIN_CRASH_REPORT,
@@ -89,7 +90,8 @@ public enum MicropolisMessage
 	POP_50K_MILESTONE,
 	POP_100K_MILESTONE,
 	POLICE_MILESTONE,
-	STADIUM_MILESTONE;
+	STADIUM_MILESTONE,
+	ECONOMIC_BOOM;
 
 	/** Whether the message should be displayed in the notification pane. */
 	public boolean useNotificationPane = false;
@@ -121,6 +123,7 @@ public enum MicropolisMessage
 	TORNADO_REPORT.useNotificationPane = true;
 	MELTDOWN_REPORT.useNotificationPane = true;
 	EARTHQUAKE_REPORT.useNotificationPane = true;
+	LIGHTNING_REPORT.useNotificationPane = true;
 	TRAIN_CRASH_REPORT.useNotificationPane = true;
 	SHIPWRECK_REPORT.useNotificationPane = true;
 	COPTER_CRASH_REPORT.useNotificationPane = true;
@@ -130,5 +133,6 @@ public enum MicropolisMessage
 	FUNDS_MILESTONE.useNotificationPane = true;
 	POLICE_MILESTONE.useNotificationPane = true;
 	STADIUM_MILESTONE.useNotificationPane = true;
+	ECONOMIC_BOOM.useNotificationPane = true;
 	}
 }

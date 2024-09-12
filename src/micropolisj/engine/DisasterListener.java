@@ -10,15 +10,10 @@
 package micropolisj.engine;
 
 /**
- * Lists the disasters that the user can invoke.
+ * Lists the listener of disasters that the user can invoke.
  */
-public enum Disaster
-{
-	MONSTER,
-	FIRE,
-	FLOOD,
-	MELTDOWN,
-	TORNADO,
-	EARTHQUAKE,
-	LIGHTNING;
+public interface DisasterListener {
+
+    void disasterStarted();
+
 }
