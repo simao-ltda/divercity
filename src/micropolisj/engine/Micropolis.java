@@ -3084,37 +3084,30 @@ public class Micropolis
         }
 	}
 
+	private boolean checkMilestone(boolean condition, boolean milestoneAchieved, MicropolisMessage message, int x, int y) {
+		if (!milestoneAchieved && condition) {
+			sendMessageAt(message, x, y);
+			return true;
+		}
+		return milestoneAchieved;
+	}
+
 	void doMessages() {
 
 		// Marco 5 escolas
-		if (!schoolMilestoneAchieved && schoolCount >= 5) {
-			sendMessageAt(MicropolisMessage.SCHOOL_MILESTONE, centerMassX, centerMassY);
-			schoolMilestoneAchieved = true;
-		}
+		schoolMilestoneAchieved = checkMilestone(schoolCount >= 5, schoolMilestoneAchieved, MicropolisMessage.SCHOOL_MILESTONE, centerMassX, centerMassY);
 
 		// Marco 100 áreas residenciais
-		if (!resZoneMilestoneAchieved && resZoneCount >= 100) {
-			sendMessageAt(MicropolisMessage.RESIDENTIAL_MILESTONE, centerMassX, centerMassY);
-			resZoneMilestoneAchieved = true;
-		}
+		resZoneMilestoneAchieved = checkMilestone(resZoneCount >= 100, resZoneMilestoneAchieved, MicropolisMessage.RESIDENTIAL_MILESTONE, centerMassX, centerMassY);
 
 		// Marco $100.000
-		if (!fundsMilestoneAchieved && budget.totalFunds >= 100000) {
-			sendMessageAt(MicropolisMessage.FUNDS_MILESTONE, centerMassX, centerMassY);
-			fundsMilestoneAchieved = true;
-		}
+		fundsMilestoneAchieved = checkMilestone(budget.totalFunds >= 100000, fundsMilestoneAchieved, MicropolisMessage.FUNDS_MILESTONE, centerMassX, centerMassY);
 
 		// Marco 5 delegacias
-		if (!policeMilestoneAchieved && policeCount >= 5) {
-			sendMessageAt(MicropolisMessage.POLICE_MILESTONE, centerMassX, centerMassY);
-			policeMilestoneAchieved = true;
-		}
+		policeMilestoneAchieved = checkMilestone(policeCount >= 5, policeMilestoneAchieved, MicropolisMessage.POLICE_MILESTONE, centerMassX, centerMassY);
 
 		// Marco de construção do estádio
-		if (!stadiumMilestoneAchieved && stadiumCount > 0) {
-			sendMessageAt(MicropolisMessage.STADIUM_MILESTONE, centerMassX, centerMassY);
-			stadiumMilestoneAchieved = true;
-		}
+		stadiumMilestoneAchieved = checkMilestone(stadiumCount > 0, stadiumMilestoneAchieved, MicropolisMessage.STADIUM_MILESTONE, centerMassX, centerMassY);
 
 		//MORE (scenario stuff)
 		checkGrowth();
