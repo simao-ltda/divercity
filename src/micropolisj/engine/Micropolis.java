@@ -899,6 +899,7 @@ public class Micropolis
         case 15:
             fireAnalysis();
             doDisasters();
+			gerarEventoAleatorio();
 			break;
 
 		default:
@@ -1261,6 +1262,17 @@ public class Micropolis
 			makeLightning();
 			break;
 		}
+	}
+
+	void gerarEventoAleatorio() {
+
+		if (PRNG.nextInt(100) < 2) {
+
+			setFunds(budget.totalFunds + 10000);
+			sendMessage(MicropolisMessage.ECONOMIC_BOOM);
+			fireFundsChanged();
+		}
+		return;
 	}
 
 	private int[][] smoothFirePoliceMap(int[][] omap)
