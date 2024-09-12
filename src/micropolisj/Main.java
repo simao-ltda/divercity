@@ -14,9 +14,56 @@ import javax.swing.*;
 import micropolisj.gui.MainWindow;
 import micropolisj.gui.SplashScreen;
 
+import java.io.FileNotFoundException;
+import java.util.Locale;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Main
 {
+	static String filePath = "language";
+	static FileReader fileReader;
+	static BufferedReader reader;
+	public static String language;
+	public static String country;
+
+	static {
+		try {
+			fileReader = new FileReader(filePath);
+			reader = new BufferedReader(fileReader);
+			String text = reader.readLine();
+			language = text.substring(0,2);
+			country = text.substring(3,5);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			// Fechar o reader
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	public static Locale locale = new Locale(language, country);
 	public static SplashScreen splash = new SplashScreen();
+
+	public Main() throws FileNotFoundException {
+		try {
+			if (reader != null) {
+				reader.close();
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
 //	public static MainWindow win = new MainWindow();
 	
 	static void createAndShowGUI()
