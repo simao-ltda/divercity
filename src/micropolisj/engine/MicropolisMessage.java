@@ -89,7 +89,8 @@ public enum MicropolisMessage
 	POP_50K_MILESTONE,
 	POP_100K_MILESTONE,
 	POLICE_MILESTONE,
-	STADIUM_MILESTONE;
+	STADIUM_MILESTONE,
+	ECONOMIC_BOOM;
 
 	/** Whether the message should be displayed in the notification pane. */
 	public boolean useNotificationPane = false;
@@ -130,5 +131,6 @@ public enum MicropolisMessage
 	FUNDS_MILESTONE.useNotificationPane = true;
 	POLICE_MILESTONE.useNotificationPane = true;
 	STADIUM_MILESTONE.useNotificationPane = true;
+	ECONOMIC_BOOM.useNotificationPane = true;
 	}
 }
