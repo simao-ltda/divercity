@@ -17,6 +17,13 @@ import java.util.*;
  */
 public class CityEval
 {
+	// Constantes para avaliação da cidade
+    private static final int TOWN_POPULATION = 2000;
+    private static final int CITY_POPULATION = 10000;
+    private static final int CAPITAL_POPULATION = 50000;
+    private static final int METROPOLIS_POPULATION = 100000;
+    private static final int MEGALOPOLIS_POPULATION = 500000;
+	
 	private final Micropolis engine;
 	private final Random PRNG;
 
@@ -112,20 +119,20 @@ public class CityEval
 		cityAssValue = z * 1000;
 	}
 
-	void doPopNum()
+    void doPopNum()
 	{
-		int oldCityPop = cityPop;
-		cityPop = engine.getCityPopulation();
-		deltaCityPop = cityPop - oldCityPop;
+        int oldCityPop = cityPop;
+        cityPop = engine.getCityPopulation();
+        deltaCityPop = cityPop - oldCityPop;
 
-		cityClass =
-			cityPop > 500000 ? 5 :    //megalopolis
-			cityPop > 100000 ? 4 :    //metropolis
-			cityPop > 50000 ? 3 :     //capital
-			cityPop > 10000 ? 2 :     //city
-			cityPop > 2000 ? 1 :      //town
-			0;                  //village
-	}
+        cityClass =
+            cityPop > MEGALOPOLIS_POPULATION ? 5 : //megalopolis
+            cityPop > METROPOLIS_POPULATION ? 4 : //metropolis
+            cityPop > CAPITAL_POPULATION ? 3 : //capital
+            cityPop > CITY_POPULATION ? 2 : //city
+            cityPop > TOWN_POPULATION ? 1 : //town
+            0; //village
+    }
 
 	void doProblems()
 	{

@@ -701,6 +701,16 @@ public class MainWindow extends JFrame
                 }));
         disastersMenu.add(menuItem);
 
+        menuItem = new JMenuItem(strings.getString("menu.disasters.LIGHTNING"));
+        setupKeys(menuItem, "menu.disasters.LIGHTNING");
+        menuItem.addActionListener(wrapActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent ev) {
+                        onInvokeDisasterClicked(Disaster.LIGHTNING);
+                    }
+                }));
+        disastersMenu.add(menuItem);
+
         JMenu priorityMenu = new JMenu(strings.getString("menu.speed"));
         setupKeys(priorityMenu, "menu.speed");
         menuBar.add(priorityMenu);
@@ -1655,6 +1665,9 @@ public class MainWindow extends JFrame
                 break;
             case EARTHQUAKE:
                 getEngine().makeEarthquake();
+                break;
+            case LIGHTNING:
+                getEngine().makeLightning();
                 break;
             default:
                 assert false; //unknown disaster

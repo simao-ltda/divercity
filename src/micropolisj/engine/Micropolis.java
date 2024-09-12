@@ -1257,6 +1257,9 @@ public class Micropolis
 				makeMonster();
 			}
 			break;
+		case 9:
+			makeLightning();
+			break;
 		}
 	}
 
@@ -2961,6 +2964,27 @@ public class Micropolis
 				}
 			}
 		}
+	}
+	
+	public void makeLightning() 
+	{
+		// forty attempts at finding place to start fire
+		for (int t = 0; t < 40; t++)
+		{
+			int x = PRNG.nextInt(getWidth());
+			int y = PRNG.nextInt(getHeight());
+			int tile = getTile(x, y);
+			if (!isZoneCenter(tile) && isCombustible(tile))
+			{
+				if (tile > 21 && (tile <= LASTZONE || (tile > NEWZONE && tile <= NEWLASTZONE))) {
+					setTile(x, y, (char)(FIRE + PRNG.nextInt(8)));
+					sendMessageAt(MicropolisMessage.LIGHTNING_REPORT, x, y);
+					pauseUnpause();
+					return;
+				}
+			}
+		}
+
 	}
 
 	/**
