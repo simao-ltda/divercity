@@ -26,9 +26,16 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.MetalIconFactory;
 
+import micropolisj.Main;
 import micropolisj.engine.*;
 import micropolisj.engine.techno.GeneralTechnology;
 import micropolisj.util.TranslationTool;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MainWindow extends JFrame
         implements Micropolis.Listener, EarthquakeListener {
@@ -42,7 +49,7 @@ public class MainWindow extends JFrame
     public NotificationPane notificationPane;
     EvaluationPane evaluationPane;
     ScienceFrameA scienceFrameA;
-    ScienceFrameB scienceFrameB;    
+    ScienceFrameB scienceFrameB;
     GraphsPane graphsPane;
     JLabel dateLbl;
     JLabel fundsLbl;
@@ -66,7 +73,8 @@ public class MainWindow extends JFrame
         appIcon = new ImageIcon(MainWindow.class.getResource("/micropolism.png"));
     }
 
-    static ResourceBundle strings = ResourceBundle.getBundle("micropolisj.GuiStrings");
+    static ResourceBundle strings = ResourceBundle.getBundle("micropolisj.GuiStrings", Main.locale);
+
     static final String PRODUCT_NAME = strings.getString("PRODUCT");
 
     public MainWindow() {
@@ -75,7 +83,6 @@ public class MainWindow extends JFrame
 
     public MainWindow(Micropolis engine) {
         setIconImage(appIcon.getImage());
-
 
         this.engine = engine;
 
@@ -100,7 +107,7 @@ public class MainWindow extends JFrame
         evaluationPane = new EvaluationPane(engine);
         evaluationPane.setVisible(false);
         evalGraphsBox.add(evaluationPane, BorderLayout.SOUTH);
-        
+
 
         JPanel leftPane = new JPanel(new GridBagLayout());
         add(leftPane, BorderLayout.WEST);
@@ -573,6 +580,42 @@ public class MainWindow extends JFrame
             difficultyMenuItems.put(level, menuItem);
         }
 
+        JMenu languageMenu = new JMenu(strings.getString("menu.language"));
+        setupKeys(languageMenu, "menu.language");
+        optionsMenu.add(languageMenu);
+
+        languageMenuItems = new HashMap<Integer, JMenuItem>();
+        for (int i = 0; i <= 1; i++) {
+            final String finalLanguage;
+            String language = strings.getString("menu.language." + i);
+            menuItem = new JRadioButtonMenuItem(language);
+
+            if ("English".equals(language) || "Inglês".equals(language)) {
+                finalLanguage = "en_US";
+                if (finalLanguage.equals(Main.language+"_"+Main.country)){
+                    menuItem.setSelected(true);
+                }
+            } else if ("Português Brasileiro".equals(language) || "Brazilian Portuguese".equals(language)) {
+                finalLanguage = "pt_BR";
+                if (finalLanguage.equals(Main.language + "_" + Main.country)) {
+                    menuItem.setSelected(true);
+                }
+
+            } else {
+                finalLanguage = "en_US";
+            }
+
+            setupKeys(menuItem, "menu.language." + i);
+            menuItem.addActionListener(wrapActionListener(
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            onLanguageClicked(finalLanguage);
+                        }
+                    }));
+            languageMenu.add(menuItem);
+            languageMenuItems.put(i, menuItem);
+        }
+
         autoBudgetMenuItem = new JCheckBoxMenuItem(strings.getString("menu.options.auto_budget"));
         setupKeys(autoBudgetMenuItem, "menu.options.auto_budget");
         autoBudgetMenuItem.addActionListener(wrapActionListener(
@@ -828,6 +871,7 @@ public class MainWindow extends JFrame
     JMenuItem soundsMenuItem;
     Map<Speed, JMenuItem> priorityMenuItems;
     Map<Integer, JMenuItem> difficultyMenuItems;
+    Map<Integer, JMenuItem> languageMenuItems;
 
     private void onAutoBudgetClicked() {
         dirty1 = true;
@@ -1023,11 +1067,11 @@ public class MainWindow extends JFrame
 
         b1.add(makeToolBtn(MicropolisTool.ROADS));
         b1.add(makeToolBtn(MicropolisTool.BIGROADS));
-        
+
         c.gridy++;
         Box b2 = new Box(BoxLayout.X_AXIS);
         gridBox.add(b2, c);
-        
+
         b2.add(makeToolBtn(MicropolisTool.RAIL));
         b2.add(makeToolBtn(MicropolisTool.STATION));
 
@@ -1043,7 +1087,7 @@ public class MainWindow extends JFrame
         Box b4 = new Box(BoxLayout.X_AXIS);
         gridBox.add(b4, c);
 
-        
+
         b4.add(makeToolBtn(MicropolisTool.CITYHALL));
         b4.add(makeToolBtn(MicropolisTool.FIRE));
         b4.add(makeToolBtn(MicropolisTool.POLICE));
@@ -1057,17 +1101,17 @@ public class MainWindow extends JFrame
         b5.add(makeToolBtn(MicropolisTool.NUCLEAR));
         b5.add(makeToolBtn(MicropolisTool.SOLAR));
         b5.add(makeToolBtn(MicropolisTool.WIND));
-        
+
         c.gridy++;
         Box b6 = new Box(BoxLayout.X_AXIS);
         gridBox.add(b6, c);
 
-    //    b5.add(makeToolBtn(MicropolisTool.STADIUM));
-      //  b5.add(makeToolBtn(MicropolisTool.SEAPORT));
+        //    b5.add(makeToolBtn(MicropolisTool.STADIUM));
+        //  b5.add(makeToolBtn(MicropolisTool.SEAPORT));
         b6.add(makeToolBtn(MicropolisTool.SCHOOL));
         b6.add(makeToolBtn(MicropolisTool.UNIA));
         b6.add(makeToolBtn(MicropolisTool.UNIB));
-        
+
 
         c.gridy++;
         Box b7 = new Box(BoxLayout.X_AXIS);
@@ -1075,23 +1119,23 @@ public class MainWindow extends JFrame
 
         b7.add(makeToolBtn(MicropolisTool.OPENAIR));
         b7.add(makeToolBtn(MicropolisTool.STADIUM));
-    //   b6.add(makeToolBtn(MicropolisTool.AIRPORT));
+        //   b6.add(makeToolBtn(MicropolisTool.AIRPORT));
         b7.add(makeToolBtn(MicropolisTool.MUSEUM));
-        
+
         c.gridy++;
         Box b8 = new Box(BoxLayout.X_AXIS);
-	    gridBox.add(b8, c);
-	    
-	//    b7.add(makeToolBtn(MicropolisTool.STATION));
-	    b8.add(makeToolBtn(MicropolisTool.SEAPORT));
-	    b8.add(makeToolBtn(MicropolisTool.AIRPORT));
-	    
-	    //c.gridy++;
-       // Box b9 = new Box(BoxLayout.X_AXIS);
+        gridBox.add(b8, c);
+
+        //    b7.add(makeToolBtn(MicropolisTool.STATION));
+        b8.add(makeToolBtn(MicropolisTool.SEAPORT));
+        b8.add(makeToolBtn(MicropolisTool.AIRPORT));
+
+        //c.gridy++;
+        // Box b9 = new Box(BoxLayout.X_AXIS);
         //gridBox.add(b9, c);
-        
+
         //b9.add(makeToolBtn(MicropolisTool.CITYHALL));
-       
+
 
         // add glue to make all elements align toward top
         c.gridy++;
@@ -1155,11 +1199,11 @@ public class MainWindow extends JFrame
 
 
 
-        	scienceFrameA = new ScienceFrameA(this, engine);
+            scienceFrameA = new ScienceFrameA(this, engine);
             scienceFrameA.setVisible(true);
         }
         if (TileConstants.isUniversityB((int) engine.getTile(xpos, ypos))) {
-        	scienceFrameB = new ScienceFrameB(this, engine);
+            scienceFrameB = new ScienceFrameB(this, engine);
             scienceFrameB.setVisible(true);
         }
     }
@@ -1199,7 +1243,7 @@ public class MainWindow extends JFrame
         if (text.equals(strings.getString("cheating.populationcheat"))) {
             engine.incCityPopulation();
             engine.incNCheats();
-        }    
+        }
         if (text.equals(strings.getString("cheating.twolaneroadcheat"))) {
             engine.twoLaneRoadTech.addResearchPoints(4000);
             engine.incNCheats();
@@ -1213,18 +1257,18 @@ public class MainWindow extends JFrame
             engine.incNCheats();
         }
         if (text.equals(strings.getString("cheating.alltechscheat"))) {
-            
-        	for (GeneralTechnology t: engine.eetechs) {
+
+            for (GeneralTechnology t: engine.eetechs) {
                 if(t != null)
 
-        		    t.isResearched = true;
-        	}
+                    t.isResearched = true;
+            }
 
-        	for (GeneralTechnology t: engine.infraTechs) {
+            for (GeneralTechnology t: engine.infraTechs) {
                 if(t != null)
-        		    t.addResearchPoints(t.getPointsNeeded() + 1);
-        	}
-        	
+                    t.addResearchPoints(t.getPointsNeeded() + 1);
+            }
+
             engine.incNCheats();
         }
     }
@@ -1610,6 +1654,13 @@ public class MainWindow extends JFrame
         getEngine().setGameLevel(newDifficulty);
     }
 
+
+
+
+    private void onLanguageClicked(String selectedLanguage) {
+        setLanguage(selectedLanguage.substring(0,2), selectedLanguage.substring(3,5));
+    }
+
     private void onPriorityClicked(Speed newSpeed) {
         if (isTimerActive()) {
             stopTimer();
@@ -1662,8 +1713,8 @@ public class MainWindow extends JFrame
             notificationPane.showMessage(engine, m, p.x, p.y);
         }
     }
-    
-    
+
+
 
     //implements Micropolis.Listener
     public void fundsChanged() {
@@ -1823,5 +1874,32 @@ public class MainWindow extends JFrame
                 strings.getString("main.about_caption"),
                 JOptionPane.PLAIN_MESSAGE,
                 appIcon);
+    }
+
+    public static void setLanguage(String language, String country) {
+        String filePath = "language";  // Caminho para o arquivo
+        String content = language + "_" + country;  // Formato "language_country"
+
+        FileWriter writer = null;
+        try {
+            // Abrir o arquivo no modo de sobrescrita
+            writer = new FileWriter(filePath);
+
+            // Escrever o novo conteúdo no formato "language_country"
+            writer.write(content);
+
+            System.out.println("Idioma atualizado para: " + content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // Fechar o writer
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
