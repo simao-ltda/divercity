@@ -599,7 +599,7 @@ public class MainWindow extends JFrame
                 if (finalLanguage.equals(Main.language+"_"+Main.country)){
                     menuItem.setSelected(true);
                 }
-            } else if ("Português Brasileiro".equals(language) || "Brazilian Portuguese".equals(language)) {
+            } else if ("Português".equals(language) || "Brazilian Portuguese".equals(language)) {
                 finalLanguage = "pt_BR";
                 if (finalLanguage.equals(Main.language + "_" + Main.country)) {
                     menuItem.setSelected(true);
