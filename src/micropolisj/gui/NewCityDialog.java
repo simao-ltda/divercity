@@ -24,6 +24,7 @@ import static micropolisj.gui.MainWindow.EXTENSION;
 public class NewCityDialog extends JDialog
 {
 	Micropolis engine;
+	MessagesPane messagesPane;
 	JButton previousMapBtn;
 	Stack<Micropolis> previousMaps = new Stack<Micropolis>();
 	Stack<Micropolis> nextMaps = new Stack<Micropolis>();
@@ -32,7 +33,7 @@ public class NewCityDialog extends JDialog
 
 	static final ResourceBundle strings = MainWindow.strings;
 
-    public NewCityDialog(MainWindow owner, final boolean showCancelOption) {
+    public NewCityDialog(MainWindow owner, final boolean showCancelOption, MessagesPane messagesPane) {
         super(owner);
 		setTitle(strings.getString("welcome.caption"));
 		setModal(true);
@@ -45,6 +46,8 @@ public class NewCityDialog extends JDialog
 
 		engine = new Micropolis();
 		new MapGenerator(engine).generateNewCity();
+
+		this.messagesPane = messagesPane;
 
 		mapPane = new OverlayMapView(engine);
 		mapPane.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -140,7 +143,6 @@ public class NewCityDialog extends JDialog
             }
         });
 
-
 	}
 
 	private void onPreviousMapClicked()
@@ -209,6 +211,7 @@ public class NewCityDialog extends JDialog
 	{
 		engine.setGameLevel(getSelectedGameLevel());
 		engine.setFunds(GameLevel.getStartingFunds(engine.gameLevel));
+		messagesPane.setText("");
 		startPlaying(engine, null);
 	}
 
