@@ -29,7 +29,7 @@ public class Main
 	public static String language;
 	public static String country;
 
-	static {
+	public static String getLanguage(){
 		try {
 			fileReader = new FileReader(filePath);
 			reader = new BufferedReader(fileReader);
@@ -50,20 +50,21 @@ public class Main
 				ex.printStackTrace();
 			}
 		}
+		return language;
 	}
 
-	public static Locale locale = new Locale(language, country);
+	public static String getCountry(){
+		getLanguage();
+		return country;
+	}
+
+	public static Locale getLocale(String language, String country){
+		return new Locale(language, country);
+	}
+
+	public static Locale locale = getLocale(getLanguage(), getCountry());
 	public static SplashScreen splash = new SplashScreen();
 
-	public Main() throws FileNotFoundException {
-		try {
-			if (reader != null) {
-				reader.close();
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
 //	public static MainWindow win = new MainWindow();
 	
 	static void createAndShowGUI()
