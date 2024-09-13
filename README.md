@@ -7,6 +7,19 @@ It was developed during a three-week programming course in 2014 at Freie Univers
 
 
 ========================================================================
+Alterações Manutenção de Software:
+- Adição de um modo Criativo
+- Adição de uma tela explicando as mecânicas do jogo
+- Adição de um mecanismo de pausa quando ocorre um desastre
+- Adição de um desastre de raio
+- Adição de marcos de população
+- Adição de evento boom econômico
+- Adição de marcos de conquista
+- Correção de bug de permanência de mensagem entre saves
+- Modificação no mecanismo de velocidade do jogo
+- Adição de ferramenta de troca de idioma
+
+========================================================================
 
 How to Run This Program
 -----------------------
