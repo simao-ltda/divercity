@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/strings/CityMessages.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityMessages_de.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityMessages_en_US.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityMessages_sv.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityStrings.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityStrings_de.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityStrings_en_US.properties" />
+    <file url="file://$PROJECT_DIR$/strings/CityStrings_sv.properties" />
+    <file url="file://$PROJECT_DIR$/strings/GuiStrings.properties" />
+    <file url="file://$PROJECT_DIR$/strings/GuiStrings_de.properties" />
+    <file url="file://$PROJECT_DIR$/strings/GuiStrings_en_US.properties" />
+    <file url="file://$PROJECT_DIR$/strings/GuiStrings_sv.properties" />
+    <file url="file://$PROJECT_DIR$/strings/StatusMessages.properties" />
+    <file url="file://$PROJECT_DIR$/strings/StatusMessages_de.properties" />
+    <file url="file://$PROJECT_DIR$/strings/StatusMessages_en_US.properties" />
+    <file url="file://$PROJECT_DIR$/strings/StatusMessages_sv.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/strings/CityStrings.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityStrings_de.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityStrings_en_US.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityStrings_pt_BR.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityStrings_sv.properties" />
+      <base-name>CityStrings</base-name>
+    </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/strings/GuiStrings.properties" />
+      <file value="file://$PROJECT_DIR$/strings/GuiStrings_de.properties" />
+      <file value="file://$PROJECT_DIR$/strings/GuiStrings_en_US.properties" />
+      <file value="file://$PROJECT_DIR$/strings/GuiStrings_pt_BR.properties" />
+      <file value="file://$PROJECT_DIR$/strings/GuiStrings_sv.properties" />
+      <base-name>GuiStrings</base-name>
+    </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/strings/StatusMessages.properties" />
+      <file value="file://$PROJECT_DIR$/strings/StatusMessages_de.properties" />
+      <file value="file://$PROJECT_DIR$/strings/StatusMessages_en_US.properties" />
+      <file value="file://$PROJECT_DIR$/strings/StatusMessages_pt_BR.properties" />
+      <file value="file://$PROJECT_DIR$/strings/StatusMessages_sv.properties" />
+      <base-name>StatusMessages</base-name>
+    </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/strings/CityMessages.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityMessages_de.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityMessages_en_US.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityMessages_pt_BR.properties" />
+      <file value="file://$PROJECT_DIR$/strings/CityMessages_sv.properties" />
+      <base-name>CityMessages</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>
