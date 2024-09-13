@@ -584,7 +584,7 @@ public class MainWindow extends JFrame
             difficultyMenuItems.put(level, menuItem);
         }
 
-        JMenu languageMenu = new JMenu(strings.getString("menu.language"));
+        final JMenu languageMenu = new JMenu(strings.getString("menu.language"));
         setupKeys(languageMenu, "menu.language");
         optionsMenu.add(languageMenu);
 
@@ -594,26 +594,22 @@ public class MainWindow extends JFrame
             String language = strings.getString("menu.language." + i);
             menuItem = new JRadioButtonMenuItem(language);
 
-            if ("English".equals(language) || "Inglês".equals(language)) {
-                finalLanguage = "en_US";
-                if (finalLanguage.equals(Main.language+"_"+Main.country)){
-                    menuItem.setSelected(true);
-                }
-            } else if ("Português".equals(language) || "Brazilian Portuguese".equals(language)) {
+            if (i == 1) {
                 finalLanguage = "pt_BR";
-                if (finalLanguage.equals(Main.language + "_" + Main.country)) {
-                    menuItem.setSelected(true);
-                }
-
             } else {
                 finalLanguage = "en_US";
             }
+            if (finalLanguage.equals(Main.language + "_" + Main.country)) {
+                menuItem.setSelected(true);
+            }
+
+            final int nLanguage = i;
 
             setupKeys(menuItem, "menu.language." + i);
             menuItem.addActionListener(wrapActionListener(
                     new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
-                            onLanguageClicked(finalLanguage);
+                            onLanguageClicked(languageMenu, nLanguage, finalLanguage);
                         }
                     }));
             languageMenu.add(menuItem);
@@ -1688,7 +1684,11 @@ public class MainWindow extends JFrame
 
 
 
-    private void onLanguageClicked(String selectedLanguage) {
+    private void onLanguageClicked(JMenu languageMenu, int nLanguage, String selectedLanguage) {
+        for (int i = 0; i < languageMenu.getItemCount(); i++){
+             languageMenu.getItem(i).setSelected(false);
+        }
+        languageMenu.getItem(nLanguage).setSelected(true);
         setLanguage(selectedLanguage.substring(0,2), selectedLanguage.substring(3,5));
     }
 
